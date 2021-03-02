@@ -1103,6 +1103,7 @@ Generator used to insert an empty block before a given block.
 _Parameters_
 
 -   _clientId_ `string`: 
+-   _blockName_ `string`: If blockName is not specified. Defaults to getDefaultBlockName()
 
 <a name="insertBeforeBlock" href="#insertBeforeBlock">#</a> **insertBeforeBlock**
 
@@ -1111,6 +1112,7 @@ Generator used to insert an empty block after a given block.
 _Parameters_
 
 -   _clientId_ `string`: 
+-   _blockName_ `string`: If blockName is not specified. Defaults to getDefaultBlockName()
 
 <a name="insertBlock" href="#insertBlock">#</a> **insertBlock**
 

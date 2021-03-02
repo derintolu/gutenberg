@@ -17,23 +17,26 @@ import { store as blockEditorStore } from '../../store';
  * the block-editor store, then the store is updated with the new settings which
  * came from props.
  *
- * @param {string}   clientId        The client ID of the block to update.
- * @param {string[]} allowedBlocks   An array of block names which are permitted
- *                                   in inner blocks.
- * @param {string}   [templateLock]  The template lock specified for the inner
- *                                   blocks component. (e.g. "all")
- * @param {boolean}  captureToolbars Whether or children toolbars should be shown
- *                                   in the inner blocks component rather than on
- *                                   the child block.
- * @param {string}   orientation     The direction in which the block
- *                                   should face.
+ * @param {string}   clientId                   The client ID of the block to update.
+ * @param {string[]} allowedBlocks              An array of block names which are permitted
+ *                                              in inner blocks.
+ * @param {string}   [templateLock]             The template lock specified for the inner
+ *                                              blocks component. (e.g. "all")
+ * @param {boolean}  captureToolbars            Whether or children toolbars should be shown
+ *                                              in the inner blocks component rather than on
+ *                                              the child block.
+ * @param {string}   orientation                The direction in which the block
+ *                                              should face.
+ * @param {string}   __experimentalDefaultBlock The default block name. Used to insert blocks
+ *                                              of this type, before/after blocks in inner blocks.
  */
 export default function useNestedSettingsUpdate(
 	clientId,
 	allowedBlocks,
 	templateLock,
 	captureToolbars,
-	orientation
+	orientation,
+	__experimentalDefaultBlock
 ) {
 	const { updateBlockListSettings } = useDispatch( blockEditorStore );
 
@@ -57,6 +60,7 @@ export default function useNestedSettingsUpdate(
 	useLayoutEffect( () => {
 		const newSettings = {
 			allowedBlocks,
+			__experimentalDefaultBlock,
 			templateLock:
 				templateLock === undefined ? parentLock : templateLock,
 		};

@@ -537,7 +537,8 @@ export function* moveBlockToPosition(
  * @param {Object}  block            Block object to insert.
  * @param {?number} index            Index at which block should be inserted.
  * @param {?string} rootClientId     Optional root client ID of block list on which to insert.
- * @param {?boolean} updateSelection If true block selection will be updated. If false, block selection will not change. Defaults to true.
+ * @param {?boolean} updateSelection If true block selection will be updated. If false, block selection will not
+ *     change. Defaults to true.
  *
  * @return {Object} Action object.
  */
@@ -557,7 +558,8 @@ export function insertBlock(
  * @param {Object[]}  blocks          Block objects to insert.
  * @param {?number}   index           Index at which block should be inserted.
  * @param {?string}   rootClientId    Optional root client ID of block list on which to insert.
- * @param {?boolean}  updateSelection If true block selection will be updated.  If false, block selection will not change. Defaults to true.
+ * @param {?boolean}  updateSelection If true block selection will be updated.  If false, block selection will not
+ *     change. Defaults to true.
  * @param {0|-1|null} initialPosition Initial focus position. Setting it to null prevent focusing the inserted block.
  * @param {?Object}   meta            Optional Meta values to be passed to the action object.
  * @return {Object} Action object.
@@ -928,7 +930,8 @@ export function removeBlock( clientId, selectPrevious ) {
  *
  * @param {string}    rootClientId    Client ID of the block whose InnerBlocks will re replaced.
  * @param {Object[]}  blocks          Block objects to insert as new InnerBlocks
- * @param {?boolean}  updateSelection If true block selection will be updated. If false, block selection will not change. Defaults to false.
+ * @param {?boolean}  updateSelection If true block selection will be updated. If false, block selection will not
+ *     change. Defaults to false.
  * @param {0|-1|null} initialPosition Initial block position.
  * @return {Object} Action object.
  */
@@ -1275,8 +1278,9 @@ export function* duplicateBlocks( clientIds, updateSelection = true ) {
  * Generator used to insert an empty block after a given block.
  *
  * @param {string} clientId
+ * @param {string} blockName If blockName is not specified. Defaults to getDefaultBlockName()
  */
-export function* insertBeforeBlock( clientId ) {
+export function* insertBeforeBlock( clientId, blockName ) {
 	if ( ! clientId ) {
 		return;
 	}
@@ -1300,6 +1304,10 @@ export function* insertBeforeBlock( clientId ) {
 		clientId,
 		rootClientId
 	);
+	if ( blockName ) {
+		const block = createBlock( blockName, {} );
+		return yield insertBlock( block, firstSelectedIndex, rootClientId );
+	}
 	return yield insertDefaultBlock( {}, rootClientId, firstSelectedIndex );
 }
 
@@ -1307,8 +1315,9 @@ export function* insertBeforeBlock( clientId ) {
  * Generator used to insert an empty block before a given block.
  *
  * @param {string} clientId
+ * @param {string} blockName If blockName is not specified. Defaults to getDefaultBlockName()
  */
-export function* insertAfterBlock( clientId ) {
+export function* insertAfterBlock( clientId, blockName ) {
 	if ( ! clientId ) {
 		return;
 	}
@@ -1332,6 +1341,11 @@ export function* insertAfterBlock( clientId ) {
 		clientId,
 		rootClientId
 	);
+	if ( blockName ) {
+		const block = createBlock( blockName, {} );
+		return yield insertBlock( block, firstSelectedIndex + 1, rootClientId );
+	}
+
 	return yield insertDefaultBlock( {}, rootClientId, firstSelectedIndex + 1 );
 }
 

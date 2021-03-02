@@ -48,6 +48,7 @@ function UncontrolledInnerBlocks( props ) {
 		orientation,
 		placeholder,
 		__experimentalLayout: layout = defaultLayout,
+		__experimentalDefaultBlock,
 	} = props;
 
 	useNestedSettingsUpdate(
@@ -55,7 +56,8 @@ function UncontrolledInnerBlocks( props ) {
 		allowedBlocks,
 		templateLock,
 		captureToolbars,
-		orientation
+		orientation,
+		__experimentalDefaultBlock
 	);
 
 	useInnerBlockTemplateSync(

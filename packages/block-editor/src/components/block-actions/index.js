@@ -29,6 +29,7 @@ export default function BlockActions( {
 		getBlockRootClientId,
 		getBlocksByClientId,
 		getTemplateLock,
+		getBlockListSettings,
 	} = useSelect( ( select ) => select( blockEditorStore ), [] );
 	const { getDefaultBlockName, getGroupingBlockName } = useSelect(
 		( select ) => select( blocksStore ),
@@ -45,8 +46,13 @@ export default function BlockActions( {
 		);
 	} );
 
+	//TODO create a new selector / tests
+	const parentBlockListSettings = getBlockListSettings( rootClientId );
+	const defaultBlockForParent =
+		parentBlockListSettings?.__experimentalDefaultBlock ??
+		getDefaultBlockName();
 	const canInsertDefaultBlock = canInsertBlockType(
-		getDefaultBlockName(),
+		defaultBlockForParent,
 		rootClientId
 	);
 
@@ -77,10 +83,16 @@ export default function BlockActions( {
 			return removeBlocks( clientIds, updateSelection );
 		},
 		onInsertBefore() {
-			insertBeforeBlock( first( castArray( clientIds ) ) );
+			insertBeforeBlock(
+				first( castArray( clientIds ) ),
+				defaultBlockForParent
+			);
 		},
 		onInsertAfter() {
-			insertAfterBlock( last( castArray( clientIds ) ) );
+			insertAfterBlock(
+				last( castArray( clientIds ) ),
+				defaultBlockForParent
+			);
 		},
 		onMoveTo() {
 			setNavigationMode( true );
