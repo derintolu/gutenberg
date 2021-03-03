@@ -1278,7 +1278,7 @@ export function* duplicateBlocks( clientIds, updateSelection = true ) {
  * Generator used to insert an empty block after a given block.
  *
  * @param {string} clientId
- * @param {string} blockName If blockName is not specified. Defaults to getDefaultBlockName()
+ * @param {string} blockName Defaults to getDefaultBlockName() if blockName is not specified.
  */
 export function* insertBeforeBlock( clientId, blockName ) {
 	if ( ! clientId ) {
@@ -1315,7 +1315,7 @@ export function* insertBeforeBlock( clientId, blockName ) {
  * Generator used to insert an empty block before a given block.
  *
  * @param {string} clientId
- * @param {string} blockName If blockName is not specified. Defaults to getDefaultBlockName()
+ * @param {string} blockName Defaults to getDefaultBlockName() if blockName is not specified.
  */
 export function* insertAfterBlock( clientId, blockName ) {
 	if ( ! clientId ) {

@@ -73,6 +73,7 @@ const {
 	__experimentalGetParsedReusableBlock,
 	__experimentalGetAllowedPatterns,
 	__experimentalGetScopedBlockPatterns,
+	__experimentalGetDefaultBlockForAllowedBlocks,
 } = selectors;
 
 describe( 'selectors', () => {
@@ -3082,6 +3083,83 @@ describe( 'selectors', () => {
 			expect( getBlockListSettings( state, 'chicken' ) ).toBe(
 				undefined
 			);
+		} );
+	} );
+
+	describe( '__experimentalGetDefaultBlockForAllowedBlocks', () => {
+		it( 'should return the default block for allowed blocks', () => {
+			const state = {
+				blockListSettings: {
+					testClientIdA: {
+						allowedBlocks: [ 'test/foo', 'test/bar' ],
+						__experimentalDefaultBlock: 'test/foo',
+					},
+					testClientIdB: {
+						allowedBlocks: [ 'test/cats', 'test/dogs' ],
+						__experimentalDefaultBlock: 'test/cats',
+					},
+				},
+			};
+			expect(
+				__experimentalGetDefaultBlockForAllowedBlocks(
+					state,
+					'testClientIdA'
+				)
+			).toEqual( 'test/foo' );
+			expect(
+				__experimentalGetDefaultBlockForAllowedBlocks(
+					state,
+					'testClientIdB'
+				)
+			).toEqual( 'test/cats' );
+		} );
+		it( 'should return undefined when not specified', () => {
+			const state = {
+				blockListSettings: {
+					testClientIdA: {
+						allowedBlocks: [ 'test/foo', 'test/bar' ],
+						__experimentalDefaultBlock: 'test/foo',
+					},
+					testClientIdB: {
+						allowedBlocks: [ 'test/cats', 'test/dogs' ],
+					},
+				},
+			};
+			expect(
+				__experimentalGetDefaultBlockForAllowedBlocks(
+					state,
+					'testClientIdB'
+				)
+			).toEqual( undefined );
+		} );
+		it( 'should return undefined when default block is not in allowedBlocks', () => {
+			const state = {
+				blockListSettings: {
+					testClientIdA: {
+						allowedBlocks: [ 'test/foo', 'test/bar' ],
+						__experimentalDefaultBlock: 'test/foo',
+					},
+					testClientIdB: {
+						allowedBlocks: [ 'test/cats', 'test/dogs' ],
+						__experimentalDefaultBlock: 'test/birds',
+					},
+				},
+			};
+			expect(
+				__experimentalGetDefaultBlockForAllowedBlocks(
+					state,
+					'testClientIdB'
+				)
+			).toEqual( undefined );
+		} );
+		it( 'should return undefined when block list settings is not specified', () => {
+			const state = { blockListSettings: {} };
+			expect(
+				__experimentalGetDefaultBlockForAllowedBlocks(
+					state,
+					'testClientIdB'
+				)
+			).toEqual( undefined );
 		} );
 	} );
 

@@ -552,7 +552,8 @@ export const getBlockParentsByBlockName = createSelector(
 );
 
 /**
- * Given a block client ID, returns the root of the hierarchy from which the block is nested, return the block itself for root level blocks.
+ * Given a block client ID, returns the root of the hierarchy from which the block is nested, return the block itself
+ * for root level blocks.
  *
  * @param {Object} state    Editor state.
  * @param {string} clientId Block from which to find root client ID.
@@ -1837,6 +1838,35 @@ export const __experimentalGetScopedBlockPatterns = createSelector(
  */
 export function getBlockListSettings( state, clientId ) {
 	return state.blockListSettings[ clientId ];
+}
+
+/**
+ * Returns the default block name for a list of allowed blocks, if any exist.
+ *
+ * @param {Object}  state    Editor state.
+ * @param {?string} clientId Block client ID.
+ *
+ * @return {?string} default block name.
+ */
+export function __experimentalGetDefaultBlockForAllowedBlocks(
+	state,
+	clientId
+) {
+	const settings = getBlockListSettings( state, clientId );
+
+	if ( ! settings?.__experimentalDefaultBlock || ! settings?.allowedBlocks ) {
+		return;
+	}
+
+	if (
+		! settings?.allowedBlocks.includes(
+			settings?.__experimentalDefaultBlock
+		)
+	) {
+		return;
+	}
+
+	return settings?.__experimentalDefaultBlock;
 }
 
 /**

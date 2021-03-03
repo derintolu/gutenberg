@@ -132,7 +132,8 @@ _Returns_
 
 <a name="getBlockHierarchyRootClientId" href="#getBlockHierarchyRootClientId">#</a> **getBlockHierarchyRootClientId**
 
-Given a block client ID, returns the root of the hierarchy from which the block is nested, return the block itself for root level blocks.
+Given a block client ID, returns the root of the hierarchy from which the block is nested, return the block itself
+for root level blocks.
 
 _Parameters_
 
@@ -1103,7 +1104,7 @@ Generator used to insert an empty block before a given block.
 _Parameters_
 
 -   _clientId_ `string`: 
--   _blockName_ `string`: If blockName is not specified. Defaults to getDefaultBlockName()
+-   _blockName_ `string`: Defaults to getDefaultBlockName() if blockName is not specified.
 
 <a name="insertBeforeBlock" href="#insertBeforeBlock">#</a> **insertBeforeBlock**
 
@@ -1112,7 +1113,7 @@ Generator used to insert an empty block after a given block.
 _Parameters_
 
 -   _clientId_ `string`: 
--   _blockName_ `string`: If blockName is not specified. Defaults to getDefaultBlockName()
+-   _blockName_ `string`: Defaults to getDefaultBlockName() if blockName is not specified.
 
 <a name="insertBlock" href="#insertBlock">#</a> **insertBlock**
 
