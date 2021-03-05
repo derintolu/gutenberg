@@ -7,6 +7,7 @@ import { filter } from 'lodash';
  * WordPress dependencies
  */
 import {
+	setDefaultBlockName,
 	registerBlockType,
 	unregisterBlockType,
 	setFreeformContentHandlerName,
@@ -121,6 +122,14 @@ describe( 'selectors', () => {
 			parent: [ 'core/test-block-b' ],
 		} );
 
+		registerBlockType( 'core/test-block-default', {
+			save: ( props ) => props.attributes.text,
+			category: 'text',
+			title: 'Test Block Default',
+			icon: 'test',
+			keywords: [ 'testing' ],
+		} );
+
 		registerBlockType( 'core/test-freeform', {
 			save: ( props ) => <RawHTML>{ props.attributes.content }</RawHTML>,
 			category: 'text',
@@ -143,6 +152,7 @@ describe( 'selectors', () => {
 		} );
 
 		setFreeformContentHandlerName( 'core/test-freeform' );
+		setDefaultBlockName( 'core/test-block-default' );
 
 		cachedSelectors.forEach( ( { clear } ) => clear() );
 	} );
@@ -153,7 +163,9 @@ describe( 'selectors', () => {
 		unregisterBlockType( 'core/test-block-b' );
 		unregisterBlockType( 'core/test-block-c' );
 		unregisterBlockType( 'core/test-freeform' );
+		unregisterBlockType( 'core/test-block-default' );
 		unregisterBlockType( 'core/post-content-child' );
+		setDefaultBlockName( null );
 
 		setFreeformContentHandlerName( undefined );
 	} );
@@ -2682,6 +2694,7 @@ describe( 'selectors', () => {
 			expect( firstBlockFirstCall.map( ( item ) => item.id ) ).toEqual( [
 				'core/test-block-a',
 				'core/test-block-b',
+				'core/test-block-default',
 				'core/test-freeform',
 				'core/block/1',
 				'core/block/2',
@@ -2696,6 +2709,7 @@ describe( 'selectors', () => {
 			expect( secondBlockFirstCall.map( ( item ) => item.id ) ).toEqual( [
 				'core/test-block-a',
 				'core/test-block-b',
+				'core/test-block-default',
 				'core/test-freeform',
 				'core/block/1',
 				'core/block/2',
@@ -3117,7 +3131,37 @@ describe( 'selectors', () => {
 				)
 			).toEqual( 'core/test-block-c' );
 		} );
-		it( 'should return undefined when default is not specified', () => {
+		it( 'should return the editor default block when block list default is not specified', () => {
+			const state = {
+				blocks: {
+					byClientId: {
+						testClientIdA: {
+							name: 'core/test-block-a',
+						},
+					},
+					attributes: {
+						testClientIdA: {},
+					},
+				},
+				settings: {},
+				blockListSettings: {
+					testClientIdA: {
+						allowedBlocks: [
+							'core/test-block-b',
+							'core/test-block-c',
+							'core/test-block-default',
+						],
+					},
+				},
+			};
+			expect(
+				__experimentalGetDefaultBlockForAllowedBlocks(
+					state,
+					'testClientIdA'
+				)
+			).toEqual( 'core/test-block-default' );
+		} );
+		it( 'should return undefined when default is not specified and editor default is not supported', () => {
 			const state = {
 				blocks: {
 					byClientId: {

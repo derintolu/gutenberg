@@ -25,6 +25,7 @@ import createSelector from 'rememo';
 import {
 	getBlockType,
 	getBlockTypes,
+	getDefaultBlockName,
 	hasBlockSupport,
 	getPossibleBlockTransformations,
 	parse,
@@ -1854,21 +1855,14 @@ export function __experimentalGetDefaultBlockForAllowedBlocks(
 ) {
 	const settings = getBlockListSettings( state, clientId );
 
-	if ( ! settings?.__experimentalDefaultBlock ) {
+	const defaultBlock =
+		settings?.__experimentalDefaultBlock ?? getDefaultBlockName();
+
+	if ( ! canInsertBlockType( state, defaultBlock, clientId ) ) {
 		return;
 	}
 
-	if (
-		! canInsertBlockType(
-			state,
-			settings.__experimentalDefaultBlock,
-			clientId
-		)
-	) {
-		return;
-	}
-
-	return settings?.__experimentalDefaultBlock;
+	return defaultBlock;
 }
 
 /**

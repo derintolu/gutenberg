@@ -12,7 +12,6 @@ import {
 	createBlock,
 	doBlocksMatchTemplate,
 	getBlockType,
-	getDefaultBlockName,
 	hasBlockSupport,
 	switchToBlockType,
 	synchronizeBlocksWithTemplate,
@@ -1071,14 +1070,13 @@ export function selectionChange(
  */
 export function* insertDefaultBlock( attributes, rootClientId, index ) {
 	// See if we specified a default for allowed blocks
-	const defaultAllowedBlock = yield controls.select(
+	const defaultBlockName = yield controls.select(
 		blockEditorStoreName,
 		'__experimentalGetDefaultBlockForAllowedBlocks',
 		rootClientId
 	);
 
 	// Abort if there is no default block type (if it has been unregistered).
-	const defaultBlockName = defaultAllowedBlock || getDefaultBlockName();
 	if ( ! defaultBlockName ) {
 		return;
 	}

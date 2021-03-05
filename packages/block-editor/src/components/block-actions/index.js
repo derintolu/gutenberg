@@ -31,7 +31,7 @@ export default function BlockActions( {
 		getTemplateLock,
 		__experimentalGetDefaultBlockForAllowedBlocks,
 	} = useSelect( ( select ) => select( blockEditorStore ), [] );
-	const { getDefaultBlockName, getGroupingBlockName } = useSelect(
+	const { getGroupingBlockName } = useSelect(
 		( select ) => select( blocksStore ),
 		[]
 	);
@@ -46,9 +46,9 @@ export default function BlockActions( {
 		);
 	} );
 
-	const defaultBlock =
-		__experimentalGetDefaultBlockForAllowedBlocks( rootClientId ) ??
-		getDefaultBlockName();
+	const defaultBlock = __experimentalGetDefaultBlockForAllowedBlocks(
+		rootClientId
+	);
 	const canInsertDefaultBlock = canInsertBlockType(
 		defaultBlock,
 		rootClientId
