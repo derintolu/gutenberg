@@ -29,10 +29,9 @@ const {
 	enterFormattedText,
 	exitFormattedText,
 	hideInsertionPoint,
-	insertAfterBlock,
-	insertBeforeBlock,
 	insertBlock,
 	insertBlocks,
+	insertDefaultBlock,
 	mergeBlocks,
 	moveBlocksToPosition,
 	multiSelect,
@@ -418,6 +417,23 @@ describe( 'actions', () => {
 		} );
 	} );
 
+	describe( 'insertDefaultBlock', () => {
+		it( 'should check for allowed default block', () => {
+			const insertDefaultBlockGenerator = insertDefaultBlock(
+				{},
+				'testclientid',
+				0
+			);
+			expect( insertDefaultBlockGenerator.next().value ).toEqual(
+				controls.select(
+					blockEditorStoreName,
+					'__experimentalGetDefaultBlockForAllowedBlocks',
+					'testclientid'
+				)
+			);
+		} );
+	} );
+
 	describe( 'insertBlocks', () => {
 		it( 'should apply default styles to blocks if blocks do not contain a style', () => {
 			const ribsBlock = {
@@ -740,136 +756,6 @@ describe( 'actions', () => {
 					meta: { patternName: 'core/chicken-ribs-pattern' },
 				},
 			} );
-		} );
-	} );
-
-	describe( 'insertAfterBlock', () => {
-		it( 'should call insert default block without blockName', () => {
-			const clientId = 'testClientId';
-			const rootClientId = 'testRootId';
-			const generator = insertAfterBlock( clientId );
-			expect( generator.next().value ).toEqual(
-				controls.select(
-					blockEditorStoreName,
-					'getBlockRootClientId',
-					clientId
-				)
-			);
-			expect( generator.next( rootClientId ).value ).toEqual(
-				controls.select(
-					blockEditorStoreName,
-					'getTemplateLock',
-					rootClientId
-				)
-			);
-			expect( generator.next( false ).value ).toEqual(
-				controls.select(
-					blockEditorStoreName,
-					'getBlockIndex',
-					clientId,
-					rootClientId
-				)
-			);
-			//expect undefined since we didn't register a default block name
-			expect( generator.next( 1 ).value ).toEqual( undefined );
-		} );
-		it( 'should call insertBlock with blockName', () => {
-			const clientId = 'testClientId';
-			const rootClientId = 'testRootId';
-			const generator = insertAfterBlock(
-				clientId,
-				'test/custom-default'
-			);
-			expect( generator.next().value ).toEqual(
-				controls.select(
-					blockEditorStoreName,
-					'getBlockRootClientId',
-					clientId
-				)
-			);
-			expect( generator.next( rootClientId ).value ).toEqual(
-				controls.select(
-					blockEditorStoreName,
-					'getTemplateLock',
-					rootClientId
-				)
-			);
-			expect( generator.next( false ).value ).toEqual(
-				controls.select(
-					blockEditorStoreName,
-					'getBlockIndex',
-					clientId,
-					rootClientId
-				)
-			);
-			expect( () => generator.next( 1 ) ).toThrow(
-				"Block type 'test/custom-default' is not registered."
-			);
-		} );
-	} );
-
-	describe( 'insertBeforeBlock', () => {
-		it( 'should call insert default block without blockName', () => {
-			const clientId = 'testClientId';
-			const rootClientId = 'testRootId';
-			const generator = insertBeforeBlock( clientId );
-			expect( generator.next().value ).toEqual(
-				controls.select(
-					blockEditorStoreName,
-					'getBlockRootClientId',
-					clientId
-				)
-			);
-			expect( generator.next( rootClientId ).value ).toEqual(
-				controls.select(
-					blockEditorStoreName,
-					'getTemplateLock',
-					rootClientId
-				)
-			);
-			expect( generator.next( false ).value ).toEqual(
-				controls.select(
-					blockEditorStoreName,
-					'getBlockIndex',
-					clientId,
-					rootClientId
-				)
-			);
-			//expect undefined since we didn't register a default block name
-			expect( generator.next( 1 ).value ).toEqual( undefined );
-		} );
-		it( 'should call insertBlock with blockName', () => {
-			const clientId = 'testClientId';
-			const rootClientId = 'testRootId';
-			const generator = insertBeforeBlock(
-				clientId,
-				'test/custom-default'
-			);
-			expect( generator.next().value ).toEqual(
-				controls.select(
-					blockEditorStoreName,
-					'getBlockRootClientId',
-					clientId
-				)
-			);
-			expect( generator.next( rootClientId ).value ).toEqual(
-				controls.select(
-					blockEditorStoreName,
-					'getTemplateLock',
-					rootClientId
-				)
-			);
-			expect( generator.next( false ).value ).toEqual(
-				controls.select(
-					blockEditorStoreName,
-					'getBlockIndex',
-					clientId,
-					rootClientId
-				)
-			);
-			expect( () => generator.next( 1 ) ).toThrow(
-				"Block type 'test/custom-default' is not registered."
-			);
 		} );
 	} );
 

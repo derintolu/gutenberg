@@ -46,11 +46,11 @@ export default function BlockActions( {
 		);
 	} );
 
-	const defaultBlockForParent =
+	const defaultBlock =
 		__experimentalGetDefaultBlockForAllowedBlocks( rootClientId ) ??
 		getDefaultBlockName();
 	const canInsertDefaultBlock = canInsertBlockType(
-		defaultBlockForParent,
+		defaultBlock,
 		rootClientId
 	);
 
@@ -81,16 +81,10 @@ export default function BlockActions( {
 			return removeBlocks( clientIds, updateSelection );
 		},
 		onInsertBefore() {
-			insertBeforeBlock(
-				first( castArray( clientIds ) ),
-				defaultBlockForParent
-			);
+			insertBeforeBlock( first( castArray( clientIds ) ) );
 		},
 		onInsertAfter() {
-			insertAfterBlock(
-				last( castArray( clientIds ) ),
-				defaultBlockForParent
-			);
+			insertAfterBlock( last( castArray( clientIds ) ) );
 		},
 		onMoveTo() {
 			setNavigationMode( true );
