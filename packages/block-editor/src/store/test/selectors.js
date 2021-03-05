@@ -3089,14 +3089,24 @@ describe( 'selectors', () => {
 	describe( '__experimentalGetDefaultBlockForAllowedBlocks', () => {
 		it( 'should return the default block for allowed blocks', () => {
 			const state = {
+				blocks: {
+					byClientId: {
+						testClientIdA: {
+							name: 'core/test-block-a',
+						},
+					},
+					attributes: {
+						testClientIdA: {},
+					},
+				},
+				settings: {},
 				blockListSettings: {
 					testClientIdA: {
-						allowedBlocks: [ 'test/foo', 'test/bar' ],
-						__experimentalDefaultBlock: 'test/foo',
-					},
-					testClientIdB: {
-						allowedBlocks: [ 'test/cats', 'test/dogs' ],
-						__experimentalDefaultBlock: 'test/cats',
+						allowedBlocks: [
+							'core/test-block-b',
+							'core/test-block-c',
+						],
+						__experimentalDefaultBlock: 'core/test-block-c',
 					},
 				},
 			};
@@ -3105,23 +3115,27 @@ describe( 'selectors', () => {
 					state,
 					'testClientIdA'
 				)
-			).toEqual( 'test/foo' );
-			expect(
-				__experimentalGetDefaultBlockForAllowedBlocks(
-					state,
-					'testClientIdB'
-				)
-			).toEqual( 'test/cats' );
+			).toEqual( 'core/test-block-c' );
 		} );
-		it( 'should return undefined when not specified', () => {
+		it( 'should return undefined when default is not specified', () => {
 			const state = {
+				blocks: {
+					byClientId: {
+						testClientIdA: {
+							name: 'core/test-block-a',
+						},
+					},
+					attributes: {
+						testClientIdA: {},
+					},
+				},
+				settings: {},
 				blockListSettings: {
 					testClientIdA: {
-						allowedBlocks: [ 'test/foo', 'test/bar' ],
-						__experimentalDefaultBlock: 'test/foo',
-					},
-					testClientIdB: {
-						allowedBlocks: [ 'test/cats', 'test/dogs' ],
+						allowedBlocks: [
+							'core/test-block-b',
+							'core/test-block-c',
+						],
 					},
 				},
 			};
@@ -3134,30 +3148,28 @@ describe( 'selectors', () => {
 		} );
 		it( 'should return undefined when default block is not in allowedBlocks', () => {
 			const state = {
+				blocks: {
+					byClientId: {
+						testClientIdA: {
+							name: 'core/test-block-a',
+						},
+					},
+					attributes: {
+						testClientIdA: {},
+					},
+				},
+				settings: {},
 				blockListSettings: {
 					testClientIdA: {
-						allowedBlocks: [ 'test/foo', 'test/bar' ],
-						__experimentalDefaultBlock: 'test/foo',
-					},
-					testClientIdB: {
-						allowedBlocks: [ 'test/cats', 'test/dogs' ],
-						__experimentalDefaultBlock: 'test/birds',
+						allowedBlocks: [ 'core/test-block-b' ],
+						__experimentalDefaultBlock: 'core/test-block-c',
 					},
 				},
 			};
 			expect(
 				__experimentalGetDefaultBlockForAllowedBlocks(
 					state,
-					'testClientIdB'
-				)
-			).toEqual( undefined );
-		} );
-		it( 'should return undefined when block list settings is not specified', () => {
-			const state = { blockListSettings: {} };
-			expect(
-				__experimentalGetDefaultBlockForAllowedBlocks(
-					state,
-					'testClientIdB'
+					'testClientIdA'
 				)
 			).toEqual( undefined );
 		} );

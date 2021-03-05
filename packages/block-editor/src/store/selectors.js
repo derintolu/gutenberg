@@ -1854,13 +1854,15 @@ export function __experimentalGetDefaultBlockForAllowedBlocks(
 ) {
 	const settings = getBlockListSettings( state, clientId );
 
-	if ( ! settings?.__experimentalDefaultBlock || ! settings?.allowedBlocks ) {
+	if ( ! settings?.__experimentalDefaultBlock ) {
 		return;
 	}
 
 	if (
-		! settings?.allowedBlocks.includes(
-			settings?.__experimentalDefaultBlock
+		! canInsertBlockType(
+			state,
+			settings.__experimentalDefaultBlock,
+			clientId
 		)
 	) {
 		return;

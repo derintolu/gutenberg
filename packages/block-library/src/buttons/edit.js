@@ -33,6 +33,7 @@ function ButtonsEdit( {
 	} );
 	const innerBlocksProps = useInnerBlocksProps( blockProps, {
 		allowedBlocks: ALLOWED_BLOCKS,
+		__experimentalDefaultBlock: buttonBlockName,
 		template: BUTTONS_TEMPLATE,
 		orientation,
 		__experimentalLayout: {
