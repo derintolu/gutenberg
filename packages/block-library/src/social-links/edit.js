@@ -94,7 +94,6 @@ export function SocialLinksEdit( props ) {
 	const blockProps = useBlockProps( { className } );
 	const innerBlocksProps = useInnerBlocksProps( blockProps, {
 		allowedBlocks: ALLOWED_BLOCKS,
-		__experimentalDefaultBlock: 'core/social-link',
 		orientation: 'horizontal',
 		placeholder: SocialPlaceholder,
 		templateLock: false,
