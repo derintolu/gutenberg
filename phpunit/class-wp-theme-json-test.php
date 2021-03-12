@@ -813,7 +813,8 @@ class WP_Theme_JSON_Test extends WP_UnitTestCase {
 		$theme_json = new WP_Theme_JSON(
 			array(
 				'customTemplates' => array(
-					'page-home' => array(
+					array(
+						'name'  => 'page-home',
 						'title' => 'Some title',
 					),
 				),
@@ -836,7 +837,8 @@ class WP_Theme_JSON_Test extends WP_UnitTestCase {
 		$theme_json = new WP_Theme_JSON(
 			array(
 				'templateParts' => array(
-					'header' => array(
+					array(
+						'name' => 'header',
 						'area' => 'Some area',
 					),
 				),
