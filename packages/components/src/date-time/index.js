@@ -18,6 +18,7 @@ import { __, _x } from '@wordpress/i18n';
 import Button from '../button';
 import { default as DatePicker } from './date';
 import { default as TimePicker } from './time';
+import ToggleControl from '../toggle-control';
 
 export { DatePicker, TimePicker };
 
@@ -36,6 +37,8 @@ function DateTimePicker(
 		false
 	);
 
+	const [ showCalendarEvents, setShowCalendarEvents ] = useState( false );
+
 	function onClickDescriptionToggle() {
 		setCalendarHelpIsVisible( ! calendarHelpIsVisible );
 	}
@@ -53,7 +56,7 @@ function DateTimePicker(
 						currentDate={ currentDate }
 						onChange={ onChange }
 						isInvalidDate={ isInvalidDate }
-						events={ events }
+						events={ showCalendarEvents ? events : [] }
 						onMonthChange={ onMonthChange }
 					/>
 				</>
@@ -142,25 +145,36 @@ function DateTimePicker(
 					</div>
 				</>
 			) }
-			<div className="components-datetime__buttons">
-				{ ! calendarHelpIsVisible && currentDate && (
+
+			<div className="components-datetime__footer">
+				<div className="components-datetime__show-events">
+					<ToggleControl
+						label={ __( 'Show events' ) }
+						checked={ showCalendarEvents }
+						onChange={ setShowCalendarEvents }
+					/>
+				</div>
+
+				<div className="components-datetime__buttons">
+					{ ! calendarHelpIsVisible && currentDate && (
+						<Button
+							className="components-datetime__date-reset-button"
+							isLink
+							onClick={ () => onChange( null ) }
+						>
+							{ __( 'Reset' ) }
+						</Button>
+					) }
 					<Button
-						className="components-datetime__date-reset-button"
+						className="components-datetime__date-help-toggle"
 						isLink
-						onClick={ () => onChange( null ) }
+						onClick={ onClickDescriptionToggle }
 					>
-						{ __( 'Reset' ) }
+						{ calendarHelpIsVisible
+							? __( 'Close' )
+							: __( 'Calendar Help' ) }
 					</Button>
-				) }
-				<Button
-					className="components-datetime__date-help-toggle"
-					isLink
-					onClick={ onClickDescriptionToggle }
-				>
-					{ calendarHelpIsVisible
-						? __( 'Close' )
-						: __( 'Calendar Help' ) }
-				</Button>
+				</div>
 			</div>
 		</div>
 	);
